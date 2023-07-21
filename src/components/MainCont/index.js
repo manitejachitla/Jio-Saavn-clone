@@ -3,6 +3,7 @@ import './styles.less';
 import playImg from '../../images/play.svg'
 import like from '../../images/like.svg'
 import {formatDuration, getAlbumImg, getArtistName, getModifiedName} from "./logic";
+import Song from "../imports/Song";
 function MainCont(props)  {
     let {currentSong,albums,trending,playSong}=props
     let {songs}=trending
@@ -35,20 +36,7 @@ function MainCont(props)  {
                         <div className="songs_cont">
                             {
                                 songs && songs.map(song=>(
-                                    <div className={`each_song ${currentSong && currentSong.id===song.id?"each_selected_song":""}`} onClick={()=>playSong(song)} key={song.id}>
-                                        <img src={playImg} alt=""/>
-                                        <div className="each_song_name_cont">
-                                            <img src={getAlbumImg(song.image)}/>
-                                            <div className="each_song_name">
-                                                <p>{getModifiedName(song.name)}</p>
-                                                {song.album && song.album.name ?(
-                                                    <p>{getModifiedName(song.album.name)}</p>
-                                                ):""}
-                                            </div>
-                                        </div>
-                                        <p className={'duration'}>{formatDuration(song.duration)}</p>
-                                        <img src={like} alt="" className={'like'}/>
-                                    </div>
+                                    <Song song={song} currentSong={currentSong} playSong={playSong}/>
                                 ))
                             }
                         </div>
