@@ -4,7 +4,7 @@ import home from './../../images/home.svg'
 import playlist from './../../images/playlist.svg'
 import artist from './../../images/profile.svg'
 import albums from './../../images/albums.svg'
-import './style.css'
+import './style.less'
 class SideBar extends Component {
     constructor(props) {
         super(props);

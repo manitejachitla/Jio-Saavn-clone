@@ -1,15 +1,23 @@
 .ma_main_cont{
+
+
+    --sidebackground: rgba(255, 255, 255, 0.38);
+
     width: 100vw;
     height: 100vh;
     position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
+    background: rgba(94, 119, 251, 0.09);
 }
 .ma_content_cont{
     width: 95%;
-    height: 90%;
+    height: calc(100vh - 120px);
+    padding-top: 60px;
+    margin:auto;
+    display: flex;
+
+    & > .ma_sidebar_cont{
+        //height: calc(100% - 80px);
+      }
 }
 .ma_background_cont{
     width: 100%;

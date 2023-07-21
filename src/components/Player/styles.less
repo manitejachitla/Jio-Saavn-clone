@@ -1,0 +1,145 @@
+.ma_player_main_cont{
+  width: 100vw;
+  position: absolute;
+  bottom: 0;
+  height: 80px;
+  background-color: var(--sidebackground);
+  left: 0;
+  border-radius: 65px 65px 0 0;
+  box-shadow: rgba(94, 119, 251, 0.07) 20px 30px 50px;
+
+
+  .song_details_cont{
+    padding: 0 20px;
+    width: 95%;
+    margin: auto;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+
+    img{
+      width: 20px;
+      aspect-ratio: 1;
+      object-fit: contain;
+      cursor: pointer;
+
+    }
+    .duration{
+      width: 30px;
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .curr{
+      margin-left: 20px;
+      margin-right: 5px;
+    }
+    .tot{
+      margin-left: 5px;
+      margin-right: 20px;
+    }
+
+    .song_name_cont{
+      display: flex;
+      align-items: center;
+      .each_song_name{
+        p:first-child{
+          font-weight: 600;
+          font-size: 16px;
+        }
+        p:nth-child(2){
+          font-size: 14px;
+          margin-top: 7px;
+        }
+      }
+      .song_img{
+        width: 50px;
+        aspect-ratio: 1;
+        border-radius: 50%;
+        margin-right: 15px;
+      }
+
+
+    }
+    .song_actions_cont{
+      flex: 1;
+      display: flex;
+      align-items: center;
+      padding-left: 20px;
+      .play_img{
+        transform: scale(2);
+        margin: 0 30px ;
+      }
+      img{
+        //margin-left: 10px;
+      }
+      #song_progress {
+        -webkit-appearance: none;
+        appearance: none;
+        background-color: #AFD1E8;
+        cursor: pointer;
+        height: 4px;
+      }
+      #song_progress::-moz-range-progress {
+        -webkit-appearance: none; /* Override default look */
+        background-color: red;
+      }
+      /***** Thumb Styles *****/
+      /***** Chrome, Safari, Opera, and Edge Chromium *****/
+      #song_progress::-webkit-slider-thumb {
+        -webkit-appearance: none; /* Override default look */
+        appearance: none;
+        margin-top: 0px; /* Centers thumb on the track */
+        background-color: #5E77FB;
+        width: 18px;
+        aspect-ratio: 1;
+        border-radius: 50%;
+        border: 5px solid white;
+      }
+
+      .progress_bar_cont{
+        height: 4px;
+        background-color: #AFD1E8;
+        margin: 0 15px;
+        flex: 1;
+        display: flex;
+        align-items: center;
+
+        .selected_cont{
+          height: 100%;
+          transition: width ease-in 400ms;
+          width: 10%;
+          position: relative;
+          background: #5E77FB;
+
+
+        }
+        .progress_icon_cont{
+          width: 20px;
+          height: 20px;
+          background: white;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          //position: absolute;
+          //top: -8px;
+          border-radius: 50%;
+
+          div{
+            width: 7px;
+            aspect-ratio: 1;
+            border-radius: 50%;
+            background: #5E77FB;
+          }
+        }
+      }
+    }
+    .player_action_cont{
+      img{
+        margin-left: 30px;
+      }
+    }
+  }
+}
