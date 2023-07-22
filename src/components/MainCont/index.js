@@ -4,7 +4,9 @@ import playImg from '../../images/play.svg'
 import like from '../../images/like.svg'
 import {formatDuration, getAlbumImg, getArtistName, getModifiedName} from "./logic";
 import Song from "../imports/Song";
+import {useNavigate} from "react-router-dom";
 function MainCont(props)  {
+    const navigate=useNavigate()
     let {currentSong,albums,trending,playSong}=props
     let {songs}=trending
         return (
@@ -19,7 +21,9 @@ function MainCont(props)  {
                     <div className="ma_album_cont">
                         {
                             albums.map(each_album=>(
-                                <div className={"ma_each_album_cont"} key={each_album.id}>
+                                <div className={"ma_each_album_cont"} key={each_album.id} onClick={()=>{
+                                    navigate('/album/'+each_album.id)
+                                }}>
                                     <img src={getAlbumImg(each_album.image,true)} alt=""/>
                                     <p className={'album_name'}>{getModifiedName(each_album.name)}</p>
                                     <p className={'artist_name'}>{getArtistName(each_album.artists)}</p>
@@ -36,7 +40,7 @@ function MainCont(props)  {
                         <div className="songs_cont">
                             {
                                 songs && songs.map(song=>(
-                                    <Song song={song} currentSong={currentSong} playSong={playSong}/>
+                                    <Song song={song} currentSong={currentSong} playSong={playSong} isHome={trending}/>
                                 ))
                             }
                         </div>

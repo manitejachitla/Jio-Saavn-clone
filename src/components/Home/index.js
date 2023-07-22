@@ -1,10 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import useSound from 'use-sound';
+import {Route, Routes} from 'react-router-dom'
 import './styles.less'
 import SideBar from "../SIdeBar/SideBar";
 import MainCont from "../MainCont";
 import Axios from "../../config/Axios";
 import Player from "../Player/Player";
+import Album from "../imports/Album";
+
 function Home () {
     const [data,setData]=useState(null)
     const [play,setPlay]=useState(false)
@@ -22,21 +24,16 @@ function Home () {
     },[url])
     useEffect(()=>{
         let getData=async ()=> {
-            let response = await Axios.get('modules?language=telugu')
-            console.log({data: response.data})
-            if (response.data){
-                setData(response.data.data)
-            }
+            let data = await Axios.get('modules?language=telugu')
+            setData(data)
             }
         getData()
     },[])
 
     const playSong=async(song)=>{
         setPlay(false)
-        let response=await Axios.get('/songs?id='+song.id),selected_song=[]
-        if (response && response.data && response.data.data && response.data.data[0] && response.data.data[0].downloadUrl){
-            selected_song=response.data.data[0]
-        }
+        let selected_song = []
+        selected_song=await Axios.get('/songs?id=' + song.id)
         setSong(selected_song)
         let selected_song_link=selected_song?.downloadUrl
         let songlink=selected_song_link.slice(-1)[0].link
@@ -49,7 +46,10 @@ function Home () {
             <div className="ma_background_cont"/>
             <div className="ma_content_cont">
                 <SideBar/>
-                <MainCont currentSong={song} albums={data?.albums || []} trending={data?.trending || {}} playSong={playSong}/>
+                <Routes>
+                    <Route path={'/'} element={<MainCont currentSong={song} albums={data?.albums || []} trending={data?.trending || {}} playSong={playSong}/>}/>
+                    <Route path="/album/:id" element={<Album/>}/>
+                </Routes>
                 {
                     song?(
                         <Player song={song} url={url} playSong={play}/>
