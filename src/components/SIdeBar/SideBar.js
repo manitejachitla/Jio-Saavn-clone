@@ -5,15 +5,16 @@ import playlist from './../../images/playlist.svg'
 import artist from './../../images/profile.svg'
 import albums from './../../images/albums.svg'
 import './style.less'
+import {Link} from "react-router-dom";
 class SideBar extends Component {
     constructor(props) {
         super(props);
         this.state={
             side_items:[
-                {name:"Home",icon:home},
-                {name:"Playlist",icon:playlist},
-                {name:"Artist",icon:artist},
-                {name:"Albums",icon:albums},
+                {name:"Home",icon:home,path:'/'},
+                {name:"Playlist",icon:playlist,path:'/'},
+                {name:"Artist",icon:artist,path:'/'},
+                {name:"Albums",icon:albums,path:'/'},
             ]
         }
     }
@@ -28,11 +29,14 @@ class SideBar extends Component {
                     <p className={'heading'}>Browse</p>
                     {
                         this.state.side_items.map(item=>
-                            <p className="browse_item"><img src={item.icon} alt=""/>{item.name}</p>
+                            <Link to={item.path}>
+                                <p className="browse_item"><img src={item.icon} alt=""/>{item.name}</p>
+                            </Link>
                         )
                     }
                 </div>
             </div>
+
         );
     }
 }

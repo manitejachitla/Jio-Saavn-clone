@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useContext, useEffect, useRef, useState} from "react";
 import './styles.less'
 import like from '../../images/like2.svg'
 import plalist from '../../images/playlist.svg'
@@ -8,27 +8,32 @@ import forwardImg from '../../images/forward.svg'
 import pauseImg from '../../images/player_pause.svg'
 import playImg from '../../images/player_play.svg'
 import {formatDuration, getAlbumImg, getModifiedName} from "../MainCont/logic";
-function Player({song,url}){
+import AppContext from "../../config/Context";
+function Player(){
+    let {currentSong,url}=useContext(AppContext)
     const audioRef=useRef(null)
     const [progress,setProgress]=useState(0)
     const [currDuration,setcurrDuration]=useState(0)
     const [isPlaying,setisPlaying]=useState(false)
     const playSong=()=>{
         setisPlaying(true)
-        console.log(song,isPlaying)
+        console.log(currentSong,isPlaying)
     }
     const pauseSong=()=>{
         setisPlaying(false)
     }
     const isVideoPlaying = video => !!(video.currentTime > 0 && !video.paused && !video.ended && video.readyState > 2);
     useEffect(()=>{
-        if (song && url){
+        if (currentSong && url){
             if (audioRef.current){
                     setisPlaying(true)
                     audioRef.current.play()
                 }
         }
-    },[song])
+    },[currentSong])
+    useEffect(()=>{
+        console.log(currentSong)
+    },[])
     useEffect(()=>{
         if (audioRef.current && false){
             if (isVideoPlaying(audioRef.current)){
@@ -43,7 +48,7 @@ function Player({song,url}){
             // console.log("this is 1000 seconds",audioRef.current,isPlaying)
             if (audioRef.current){
                 setcurrDuration(audioRef.current.currentTime)
-                setProgress((parseInt(audioRef.current.currentTime)/parseInt(song.duration))*100)
+                setProgress((parseInt(audioRef.current.currentTime)/parseInt(currentSong.duration))*100)
             }
         }, 1000);
         // console.log("here player",interval)
@@ -52,14 +57,14 @@ function Player({song,url}){
     return (
         <div className={'ma_player_main_cont'}>
             {
-                song?(
+                currentSong?(
                     <div className="song_details_cont">
                         <div className="song_name_cont">
-                            <img src={getAlbumImg(song.image)} className={'song_img'}/>
+                            <img src={getAlbumImg(currentSong.image)} className={'song_img'}/>
                             <div className="each_song_name">
-                                <p>{getModifiedName(song.name)}</p>
-                                {song.album && song.album.name ?(
-                                    <p>{getModifiedName(song.album.name)}</p>
+                                <p>{getModifiedName(currentSong.name)}</p>
+                                {currentSong.album && currentSong.album.name ?(
+                                    <p>{getModifiedName(currentSong.album.name)}</p>
                                 ):""}
                             </div>
                         </div>
@@ -77,8 +82,8 @@ function Player({song,url}){
                                    onProgress={(e)=>{
                                 console.log(e)
                             }} className={'progress_bar_cont'} onInput={(e)=>{
-                                let dur=song.duration * (e.target.value/100)
-                                console.log(e.target.value,song.duration,dur)
+                                let dur=currentSong.duration * (e.target.value/100)
+                                console.log(e.target.value,currentSong.duration,dur)
                                 if (audioRef.current) {
                                     audioRef.current.currentTime=dur
                                     // setcurrDuration(dur)
@@ -92,7 +97,7 @@ function Player({song,url}){
                             {/*        <div></div>*/}
                             {/*    </div>*/}
                             {/*</div>*/}
-                            <p className={'tot duration'}>{formatDuration(song.duration)}</p>
+                            <p className={'tot duration'}>{formatDuration(currentSong.duration)}</p>
 
                         </div>
                         <div className="player_action_cont">

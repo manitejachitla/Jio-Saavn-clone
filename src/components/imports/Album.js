@@ -1,9 +1,11 @@
 import {useParams} from "react-router-dom";
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import Axios from "../../config/Axios";
 import Song from "./Song";
 import {formatDuration, getAlbumImg} from "../MainCont/logic";
+import AppContext from "../../config/Context";
 const Album = () => {
+    let {currentSong,playSong}=useContext(AppContext)
     const {id}=useParams()
     const [albumdata,setAlbumData]=useState(null)
     useEffect(()=>{
@@ -30,7 +32,7 @@ const Album = () => {
                           <p className={'album_artist'}>by {albumdata.primaryArtists}</p>
                           <p className={'copy_right'}>{albumdata.songs.length} Songs - {getTotalDuration(albumdata.songs)}</p>
                           <p className={'copy_right'}>{albumdata.songs[0]?.copyright}</p>
-                          <button className={'play_btn'}>Play</button>
+                          <button className={'play_btn'} onClick={()=>playSong(albumdata.songs[0])}>Play</button>
                       </div>
                   </div>
                   {
@@ -38,7 +40,7 @@ const Album = () => {
                           <>
                               {
                                   albumdata.songs.map(song=>(
-                                      <Song song={song} />
+                                      <Song song={song}/>
                                   ))
                               }
                           </>

@@ -6,6 +6,7 @@ import MainCont from "../MainCont";
 import Axios from "../../config/Axios";
 import Player from "../Player/Player";
 import Album from "../imports/Album";
+import AppContext from "../../config/Context";
 
 function Home () {
     const [data,setData]=useState(null)
@@ -34,47 +35,50 @@ function Home () {
         setPlay(false)
         let selected_song = []
         selected_song=await Axios.get('/songs?id=' + song.id)
-        setSong(selected_song)
+        selected_song=selected_song[0]
         let selected_song_link=selected_song?.downloadUrl
         let songlink=selected_song_link.slice(-1)[0].link
         setUrl(songlink)
         setPlay(true)
+        setSong(selected_song)
         console.log(songlink)
     }
     return (
-        <div className={'ma_main_cont'}>
-            <div className="ma_background_cont"/>
-            <div className="ma_content_cont">
-                <SideBar/>
-                <Routes>
-                    <Route path={'/'} element={<MainCont currentSong={song} albums={data?.albums || []} trending={data?.trending || {}} playSong={playSong}/>}/>
-                    <Route path="/album/:id" element={<Album/>}/>
-                </Routes>
-                {
-                    song?(
-                        <Player song={song} url={url} playSong={play}/>
-                    ):""
-                }
+        <AppContext.Provider value={{currentSong: song,url,playSong}}>
+            <div className={'ma_main_cont'}>
+                <div className="ma_background_cont"/>
+                <div className="ma_content_cont">
+                    <SideBar/>
+                    <Routes>
+                        <Route path={'/'} element={<MainCont currentSong={song} albums={data?.albums || []} trending={data?.trending || {}} playSong={playSong}/>}/>
+                        <Route path="/album/:id" element={<Album/>}/>
+                    </Routes>
+                    {
+                        song?(
+                            <Player />
+                        ):""
+                    }
+                </div>
+                {/*<h2 onClick={()=>{*/}
+                {/*    console.log("clicked")*/}
+                {/*}}>{duration}</h2>*/}
+                {/*<button*/}
+                {/*    onClick={()=>{*/}
+                {/*        console.log("clicked")*/}
+                {/*        play()*/}
+                {/*    }}>Play</button>*/}
+                {/*<button*/}
+                {/*    onClick={()=>{*/}
+                {/*        console.log("clicked")*/}
+                {/*        stop()*/}
+                {/*    }}>Stop</button>*/}
+                {/*<button*/}
+                {/*    onClick={()=>{*/}
+                {/*        setSong(!song)*/}
+                {/*        setUrl(song?'https://aac.saavncdn.com/298/373a7e986b4a4e64f5273f59a6c9f5cf_320.mp4':'https://aac.saavncdn.com/872/015ba05e215f9050011647afa539f2dc_320.mp4')*/}
+                {/*    }}>change track</button>*/}
             </div>
-            {/*<h2 onClick={()=>{*/}
-            {/*    console.log("clicked")*/}
-            {/*}}>{duration}</h2>*/}
-            {/*<button*/}
-            {/*    onClick={()=>{*/}
-            {/*        console.log("clicked")*/}
-            {/*        play()*/}
-            {/*    }}>Play</button>*/}
-            {/*<button*/}
-            {/*    onClick={()=>{*/}
-            {/*        console.log("clicked")*/}
-            {/*        stop()*/}
-            {/*    }}>Stop</button>*/}
-            {/*<button*/}
-            {/*    onClick={()=>{*/}
-            {/*        setSong(!song)*/}
-            {/*        setUrl(song?'https://aac.saavncdn.com/298/373a7e986b4a4e64f5273f59a6c9f5cf_320.mp4':'https://aac.saavncdn.com/872/015ba05e215f9050011647afa539f2dc_320.mp4')*/}
-            {/*    }}>change track</button>*/}
-        </div>
+        </AppContext.Provider>
     );
 }
 

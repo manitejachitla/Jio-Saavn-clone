@@ -1,20 +1,23 @@
 import playImg from "../../images/play.svg";
+import pauseImg from "../../images/pause.svg";
 import {formatDuration, getAlbumImg, getModifiedName} from "../MainCont/logic";
 import like from "../../images/like2.svg";
-import React from "react";
+import React, {useContext} from "react";
 import './common.less';
+import AppContext from "../../config/Context";
 
-const Song = ({currentSong,song,playSong,isHome}) => {
+const Song = ({song,isHome}) => {
+    let {currentSong,playSong}=useContext(AppContext)
   return (
       <div className={`ma_each_song ${currentSong && currentSong.id===song.id?"ma_each_selected_song":""}`} onClick={()=>playSong(song)} key={song.id}>
-          <img src={playImg} alt=""/>
+          <img src={currentSong && currentSong.id===song.id?pauseImg:playImg} alt=""/>
           <div className="each_song_name_cont">
               {
                   isHome?(
                       <img src={getAlbumImg(song.image)}/>
                   ):""
               }
-              <div className="each_song_name">
+              <div className={isHome?"each_home_song_name":"each_song_name"}>
                   <p className={'song_name'}>{getModifiedName(song.name)}</p>
                   {isHome && song.album && song.album.name ?(
                       <p className={'song_album'}>{getModifiedName(song.album.name)}</p>

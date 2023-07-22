@@ -34,6 +34,15 @@
     display: none;
     border-radius: 0px;
   }
+  .album_on_hover_img{
+    cursor: pointer;
+  }
+  .album_on_hover_img:hover img{
+    transform: scale(1.05);
+  }
+  .album_on_hover_img > img{
+    transition: transform ease-in 200ms;
+  }
   .ma_main_top_music_cont{
     width: 100%;
     overflow-x: auto;
@@ -86,11 +95,15 @@
     .ma_main_recommend_cont{
       width: 58%;
 
+
+
       .recom_albums_cont{
         display: flex;
         overflow-x: scroll;
         .each_album{
           //width: 160px;
+          cursor: pointer;
+          padding: 10px;
           aspect-ratio: 1;
           margin: 10px 15px;
           img{

@@ -8,6 +8,9 @@ import {useNavigate} from "react-router-dom";
 function MainCont(props)  {
     const navigate=useNavigate()
     let {currentSong,albums,trending,playSong}=props
+    const navigateToAlbum=(albumId)=>{
+        navigate('/album/'+albumId)
+    }
     let {songs}=trending
         return (
             <div className={'ma_main_content_cont'}>
@@ -21,8 +24,8 @@ function MainCont(props)  {
                     <div className="ma_album_cont">
                         {
                             albums.map(each_album=>(
-                                <div className={"ma_each_album_cont"} key={each_album.id} onClick={()=>{
-                                    navigate('/album/'+each_album.id)
+                                <div className={"ma_each_album_cont album_on_hover_img"} key={each_album.id} onClick={()=>{
+                                    navigateToAlbum(each_album.id)
                                 }}>
                                     <img src={getAlbumImg(each_album.image,true)} alt=""/>
                                     <p className={'album_name'}>{getModifiedName(each_album.name)}</p>
@@ -53,7 +56,7 @@ function MainCont(props)  {
                             {
                                 trending && trending.albums && Array.isArray(trending.albums)?(
                                     trending.albums.map(each_album=>(
-                                        <div className={'each_album'}>
+                                        <div className={'each_album album_on_hover_img'} onClick={()=> navigateToAlbum(each_album.id)}>
                                             <img src={getAlbumImg(each_album.image,true)} alt=""/>
                                             <p className={'album_name'}>{getModifiedName(each_album.name)}</p>
                                         </div>
