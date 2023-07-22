@@ -10,33 +10,35 @@ import playImg from '../../images/player_play.svg'
 import {formatDuration, getAlbumImg, getModifiedName} from "../MainCont/logic";
 import AppContext from "../../config/Context";
 function Player(){
-    let {currentSong,url}=useContext(AppContext)
+    let {currentSong,url,isPlaying,setisPlaying}=useContext(AppContext)
     const audioRef=useRef(null)
     const [progress,setProgress]=useState(0)
     const [currDuration,setcurrDuration]=useState(0)
-    const [isPlaying,setisPlaying]=useState(false)
+    const isSongChanged = useRef(false);
     const playSong=()=>{
         setisPlaying(true)
-        console.log(currentSong,isPlaying)
     }
     const pauseSong=()=>{
         setisPlaying(false)
     }
     const isVideoPlaying = video => !!(video.currentTime > 0 && !video.paused && !video.ended && video.readyState > 2);
     useEffect(()=>{
-        if (currentSong && url){
-            if (audioRef.current){
-                    setisPlaying(true)
-                    audioRef.current.play()
-                }
+        if (currentSong && url) {
+            if (audioRef.current) {
+                isSongChanged.current=true
+                audioRef.current.play()
+                setisPlaying(true)
+            }
         }
     },[currentSong])
     useEffect(()=>{
         console.log(currentSong)
     },[])
     useEffect(()=>{
-        if (audioRef.current && false){
-            if (isVideoPlaying(audioRef.current)){
+        // isSongChanged.current=true
+        console.log(isSongChanged.current)
+        if (audioRef.current && !isSongChanged.current) {
+            if (isPlaying) {
                 audioRef.current.pause()
             } else {
                 audioRef.current.play()
