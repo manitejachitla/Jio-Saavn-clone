@@ -10,16 +10,22 @@ import playImg from '../../images/player_play.svg'
 import {formatDuration, getAlbumImg, getModifiedName} from "../MainCont/logic";
 import AppContext from "../../config/Context";
 function Player(){
-    let {currentSong,url,isPlaying,setisPlaying}=useContext(AppContext)
+    let {currentSong,url,queue,isPlaying,setisPlaying,playSong}=useContext(AppContext)
     const audioRef=useRef(null)
     const [progress,setProgress]=useState(0)
     const [currDuration,setcurrDuration]=useState(0)
     const isSongChanged = useRef(false);
-    const playSong=()=>{
+    const playCurrentSong=()=>{
         setisPlaying(true)
+        if (audioRef.current) {
+            audioRef.current.play()
+        }
     }
-    const pauseSong=()=>{
+    const pauseCurrentSong=()=>{
         setisPlaying(false)
+        if (audioRef.current) {
+            audioRef.current.pause()
+        }
     }
     useEffect(()=>{
         if (currentSong && url) {
@@ -27,23 +33,14 @@ function Player(){
                 isSongChanged.current=true
                 audioRef.current.play()
                 setisPlaying(true)
+                setcurrDuration(0)
+                setProgress(0)
             }
         }
     },[currentSong])
     useEffect(()=>{
         console.log(currentSong)
     },[])
-    useEffect(()=>{
-        // isSongChanged.current=true
-        console.log(isSongChanged.current)
-        if (audioRef.current && !isSongChanged.current) {
-            if (isPlaying) {
-                audioRef.current.pause()
-            } else {
-                audioRef.current.play()
-            }
-        }
-    },[isPlaying])
     useEffect(() => {
         const interval = setInterval(() => {
             // console.log("this is 1000 seconds",audioRef.current,isPlaying)
@@ -55,6 +52,24 @@ function Player(){
         // console.log("here player",interval)
         return () => clearInterval(interval);
     }, []);
+    let handleSkipOptions=(action)=>{
+        if (!queue || !Array.isArray(queue) || !queue.length) return;
+        let currentSongIndex=queue.findIndex(item=>item.id===currentSong.id)
+        let nextSongIndex=currentSongIndex;
+        switch (action) {
+            case 'prev':{
+                nextSongIndex=nextSongIndex-1;
+                break;
+            }case 'next':{
+                nextSongIndex=nextSongIndex+1;
+                break;
+            }
+        }
+        if (nextSongIndex>=0 && nextSongIndex<queue.length){
+            console.log({nextSongIndex})
+            playSong(queue[nextSongIndex])
+        }
+    }
     return (
         <div className={'ma_player_main_cont'}>
             {
@@ -70,9 +85,9 @@ function Player(){
                             </div>
                         </div>
                         <div className="song_actions_cont">
-                            <img src={backImg} alt=""/>
-                            <img src={isPlaying?pauseImg:playImg} alt="" className={'play_img'} onClick={isPlaying?pauseSong:playSong}/>
-                            <img src={forwardImg} alt=""/>
+                            <img src={backImg} alt="" onClick={()=>handleSkipOptions('prev')}/>
+                            <img src={isPlaying?pauseImg:playImg} alt="" className={'play_img'} onClick={isPlaying?pauseCurrentSong:playCurrentSong}/>
+                            <img src={forwardImg} alt="" onClick={()=>handleSkipOptions('next')}/>
                             <p className={'curr duration'}>{formatDuration(currDuration)}</p>
                             <input type="range" onLoadedData={()=>{
                                 if (isPlaying){

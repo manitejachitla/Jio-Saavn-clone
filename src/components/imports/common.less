@@ -21,7 +21,7 @@
       font-size: 15px;
     }
     .each_song_name{
-      width: 30%;
+      width: 40%;
     }
     .each_home_song_name{
       width: 70%;
@@ -39,7 +39,7 @@
       margin-top: 7px;
     }
     img{
-      width: 50px;
+      width: 40px;
       aspect-ratio: 1;
       border-radius: 50%;
       margin-right: 15px;
@@ -61,7 +61,7 @@
 
 //album styling
 .ma_album_main_cont{
-  width: 90%;
+  width: 100%;
   margin: 10px auto;
   padding: 0 20px;
 
@@ -111,4 +111,45 @@
       cursor: pointer;
     }
   }
+}
+
+// item style styling
+//album styling
+.ma_il_main_cont {
+  width: 100%;
+  margin: 10px auto;
+  padding: 0 20px;
+  overflow: auto;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+
+  .ma_il_each_item{
+    //width: 260px;search_action
+    aspect-ratio: 1;
+    margin: 10px 15px;
+    display: flex;
+    flex-direction: column;
+    width: 18%;
+    min-width: 180px;
+    img{
+      border-radius: 12px;
+      box-shadow: rgba(0, 0, 0, 0.15) 5px 5px 50px;
+      border: rgba(71, 98, 240, 0.19);
+      width: 100%;
+      aspect-ratio: 1;
+    }
+    P{
+      margin-top: 10px;
+    }
+    .item_name{
+      font-size: 16px;
+      font-weight: 600;
+    }
+    .item_subtitle{
+      color: #808080;
+      font-size: 14px;
+    }
+  }
+
 }

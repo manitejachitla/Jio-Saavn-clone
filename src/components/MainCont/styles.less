@@ -14,9 +14,16 @@
       font-size: 22px;
       font-weight: 600;
     }
+
+    .heading_img_cont img:nth-child(2){
+      margin-left: 15px;
+    }
+    .heading_img_cont img{
+      cursor: pointer;
+    }
   }
   .ma_main_search_cont{
-    width: 100%;
+    width: 95%;
     margin: 15px auto 25px;
     height: 45px;
     display: flex;
@@ -107,38 +114,14 @@
       }
     }
   }
-  // handle scroll bar
-  .no_scroll_bar_cont::-webkit-scrollbar {
-    height: 0px;
-    width: 0px;
-  }
 
-  .no_scroll_bar_cont::-webkit-scrollbar-track {
-    //box-shadow: inset 0 0 1px grey;
-    border-radius: 0px;
-  }
-
-  .no_scroll_bar_cont::-webkit-scrollbar-thumb {
-    background: rgba(128, 128, 128, 0.2);
-    display: none;
-    border-radius: 0px;
-  }
-  .album_on_hover_img{
-    cursor: pointer;
-  }
-  .album_on_hover_img:hover img{
-    transform: scale(1.05);
-  }
-  .album_on_hover_img > img{
-    transition: transform ease-in 200ms;
-  }
   .ma_main_top_music_cont{
     width: 100%;
-    overflow-x: auto;
 
     .ma_album_cont{
       width: 100%;
       display: flex;
+      overflow-x: auto;
       .ma_each_album_cont:first-child{
         margin-left: 0;
       }

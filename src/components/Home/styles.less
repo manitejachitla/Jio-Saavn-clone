@@ -30,3 +30,35 @@
     opacity: 0.18;
     z-index: -1;
 }
+
+.ma_main_route_cont{
+    width:100%;
+    height: calc(100% - 45px);
+    padding-bottom: 40px;
+    overflow-y: scroll;
+}
+// handle scroll bar
+.no_scroll_bar_cont::-webkit-scrollbar {
+    height: 0px;
+    width: 0px;
+}
+
+.no_scroll_bar_cont::-webkit-scrollbar-track {
+    //box-shadow: inset 0 0 1px grey;
+    border-radius: 0px;
+}
+
+.no_scroll_bar_cont::-webkit-scrollbar-thumb {
+    background: rgba(128, 128, 128, 0.2);
+    display: none;
+    border-radius: 0px;
+}
+.album_on_hover_img{
+    cursor: pointer;
+}
+.album_on_hover_img:hover img{
+    transform: scale(1.05);
+}
+.album_on_hover_img > img{
+    transition: transform ease-in 200ms;
+}

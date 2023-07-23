@@ -10,7 +10,7 @@ const Song = ({song,isHome}) => {
     let {currentSong,playSong,isPlaying,setisPlaying}=useContext(AppContext)
   return (
       <div className={`ma_each_song ${currentSong && currentSong.id===song.id?"ma_each_selected_song":""}`} onClick={()=>playSong(song)} key={song.id}>
-          <img src={currentSong && currentSong.id===song.id?pauseImg:playImg} alt="" onClick={()=>setisPlaying((ctt)=>!ctt)}/>
+          <img src={currentSong && currentSong.id===song.id?pauseImg:playImg} alt="play" onClick={()=>setisPlaying((ctt)=>!ctt)}/>
           <div className="each_song_name_cont">
               {
                   isHome?(

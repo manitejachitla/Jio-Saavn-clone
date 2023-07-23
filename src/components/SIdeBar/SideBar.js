@@ -12,9 +12,9 @@ class SideBar extends Component {
         this.state={
             side_items:[
                 {name:"Home",icon:home,path:'/'},
-                {name:"Playlist",icon:playlist,path:'/'},
+                {name:"Playlist",icon:playlist,path:'/playlists'},
                 {name:"Artist",icon:artist,path:'/'},
-                {name:"Albums",icon:albums,path:'/'},
+                {name:"Albums",icon:albums,path:'/albums'},
             ]
         }
     }

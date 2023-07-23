@@ -1,111 +1,60 @@
 import React, {useContext, useEffect, useState} from 'react';
 import './styles.less';
-import searchImg from '../../images/search.svg'
-import settingsImg from '../../images/settings.svg'
-import notificationsImg from '../../images/notifications.svg'
-import {getAlbumImg, getArtistName, getModifiedName, getResultDetails} from "./logic";
+import {getAlbumImg, getArtistName, getModifiedName} from "./logic";
 import Song from "../imports/Song";
 import {useNavigate} from "react-router-dom";
-import Axios from "../../config/Axios";
 import AppContext from "../../config/Context";
+import scrollRight from '../../images/scrollRight.svg'
+import scrollLeft from '../../images/scrollLeft.svg'
 function MainCont(props)  {
     const {playSong} =useContext(AppContext)
     const navigate=useNavigate()
-    const callSearch=React.createRef()
-    const [searchData,setSearchData]=useState(null)
-    const [searchVal,setSearchVal]=useState('')
+    const topMusic=React.createRef()
+    const recommended=React.createRef()
+    const [scrollX,setScrollX]=useState({top:0,reco:0})
     let {currentSong,albums,trending}=props
     const navigateToAlbum=(albumId)=>{
         navigate('/album/'+albumId)
     }
-    useEffect(()=>{
-        const getData = setTimeout(async () => {
-            if (searchVal && searchVal!==''){
-                let data=await Axios.get('search/all?query='+searchVal)
-                setSearchData(data)
 
-            }
-        }, 1000)
-        return () => clearTimeout(getData)
-    },[searchVal])
-    const handleSearchChange=(e)=>{
-        let val=e.target.value;
-        setSearchVal(val)
-        console.log({val})
-    }
-    const handleSearchItemClick=async (item)=>{
-        let {type,id}=item
-        switch (type) {
-            case 'album':{
-                navigate('/album/'+id)
-                break
-            }case 'song':{
-                playSong(item)
-                break
-            }
-            default: break;
+    const handleScroll=(key,isLeft)=>{
+        let scrollBy,x=window.innerWidth* 0.7,element=key==='top'?topMusic:recommended;
+        if (isLeft){
+            scrollBy=scrollX[key]-x
+        } else {
+            scrollBy=scrollX[key]+x;
         }
-        console.log(item)
-        console.log(item.type)
+        if (element && element.current){
+            element.current.scroll({
+                top: 0,
+                left: scrollBy,
+                behavior: "smooth",
+            });
+        }
+
+        if (scrollBy<0){
+            scrollBy=0
+        }
+        if (scrollBy>window.innerWidth){
+            scrollBy=window.innerWidth
+        }
+        scrollX[key]=scrollBy
+        setScrollX(scrollX)
+
+
     }
     let {songs}=trending
         return (
-            <div className={'ma_main_content_cont'}>
-                <div className="ma_main_search_cont">
-                    <div className="search_input">
-                        <img src={searchImg} alt=""/>
-                        <input type="text" placeholder={'Search for song,artists etc...'} onChange={handleSearchChange} value={searchVal}/>
-                        {
-                            searchVal && searchVal!==''?(
-                                <div className="search_results_cont no_scroll_bar_cont">
-                                    {searchData ?(
-                                        Object.keys(searchData).map(type=>(
-                                            <>
-                                                {
-                                                    searchData[type].results.length?(
-                                                        <div className="each_search_result">
-                                                            <p className={'each_search_result_heading'}>
-                                                                {type==='topQuery'?'Top Result':type.toUpperCase()[0]+type.slice(1,type.length)}
-                                                            </p>
-                                                            {
-                                                                searchData[type].results.map(result=>(
-                                                                    <div className="each_search_result_item" onClick={()=>handleSearchItemClick(result)}>
-                                                                        <img src={getAlbumImg(result.image)} alt=""/>
-                                                                        <div className="name_cont">
-                                                                            <p className={'result_name'}>{result.title}</p>
-                                                                            {/*<p className={'result_album'}>*/}
-                                                                            {/*    {result.album ?result.album :''}*/}
-                                                                            {/*    {result.artist ?result.artist.split(',')[0] :''}*/}
-                                                                            {/*    {result.type==='artist' && result.description ?result.description :''}*/}
-                                                                            {/*</p> */}
-                                                                            <p className={'result_album'}>
-                                                                                {result.description ?result.description :''}
-                                                                            </p>
-                                                                        </div>
-                                                                    </div>
-                                                                ))
-                                                            }
-                                                        </div>
-                                                    ):""
-                                                }
-                                            </>
-                                        ))
-                                    ):""}
-                                </div>
-                            ):""
-                        }
-                    </div>
-                    <div className="search_action">
-                        <button>Upgrade To Premium</button>
-                        <img src={settingsImg} alt=""/>
-                        <img src={notificationsImg} alt=""/>
-                    </div>
-                </div>
-                <div className="ma_main_top_music_cont no_scroll_bar_cont">
+            <>
+                <div className="ma_main_top_music_cont">
                     <div className="heading_cont">
                         <p>Top Music</p>
+                        <div className="heading_img_cont">
+                            <img src={scrollLeft} alt="" onClick={()=>handleScroll('top',true)}/>
+                            <img src={scrollRight} alt="" onClick={()=>handleScroll('top')}/>
+                        </div>
                     </div>
-                    <div className="ma_album_cont">
+                    <div className="ma_album_cont no_scroll_bar_cont" ref={topMusic}>
                         {
                             albums.map(each_album=>(
                                 <div className={"ma_each_album_cont album_on_hover_img"} key={each_album.id} onClick={()=>{
@@ -133,10 +82,14 @@ function MainCont(props)  {
                         </div>
                     </div>
                     <div className="ma_main_recommend_cont">
-                        <div className="heading_cont">
+                        <div className="heading_cont" onMouseUp={(e)=>console.log(e.pageX)}>
                             <p>Recommended Albums</p>
+                            <div className="heading_img_cont">
+                                <img src={scrollLeft} alt="" onClick={()=>handleScroll('reco',true)}/>
+                                <img src={scrollRight} alt="" onClick={()=>handleScroll('reco')}/>
+                            </div>
                         </div>
-                        <div className="recom_albums_cont no_scroll_bar_cont">
+                        <div className="recom_albums_cont no_scroll_bar_cont" ref={recommended}>
                             {
                                 trending && trending.albums && Array.isArray(trending.albums)?(
                                     trending.albums.map(each_album=>(
@@ -150,7 +103,7 @@ function MainCont(props)  {
                         </div>
                     </div>
                 </div>
-            </div>
+            </>
         );
 }
 

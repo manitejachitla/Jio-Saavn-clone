@@ -4,13 +4,13 @@ import Axios from "../../config/Axios";
 import Song from "./Song";
 import {formatDuration, getAlbumImg} from "../MainCont/logic";
 import AppContext from "../../config/Context";
-const Album = () => {
+const Album = ({type}) => {
     let {currentSong,playSong,queue,setQueue}=useContext(AppContext)
     const {id}=useParams()
     const [albumdata,setAlbumData]=useState(null)
     useEffect(()=>{
         let getData=async ()=>{
-            let data=await Axios.get('/albums?id='+id)
+            let data=await Axios.get(`/${type}s?id=${id}`)
             setAlbumData(data)
             setQueue(data.songs)
         }
@@ -30,7 +30,7 @@ const Album = () => {
                           <p className={'album_name'}>{albumdata.name}
                               <span>{albumdata.year?" ("+albumdata.year+") ":""}</span>
                           </p>
-                          <p className={'album_artist'}>by {albumdata.primaryArtists}</p>
+                          <p className={'album_artist'}>by {type==='album'?albumdata.primaryArtists:albumdata.firstname}</p>
                           <p className={'copy_right'}>{albumdata.songs.length} Songs - {getTotalDuration(albumdata.songs)}</p>
                           <p className={'copy_right'}>{albumdata.songs[0]?.copyright}</p>
                           <button className={'play_btn'} onClick={()=>playSong(albumdata.songs[0])}>Play</button>
@@ -41,7 +41,7 @@ const Album = () => {
                           <>
                               {
                                   albumdata.songs.map(song=>(
-                                      <Song song={song}/>
+                                      <Song song={song} key={song.id}/>
                                   ))
                               }
                           </>
