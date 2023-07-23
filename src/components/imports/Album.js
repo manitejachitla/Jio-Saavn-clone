@@ -5,13 +5,14 @@ import Song from "./Song";
 import {formatDuration, getAlbumImg} from "../MainCont/logic";
 import AppContext from "../../config/Context";
 const Album = () => {
-    let {currentSong,playSong}=useContext(AppContext)
+    let {currentSong,playSong,queue,setQueue}=useContext(AppContext)
     const {id}=useParams()
     const [albumdata,setAlbumData]=useState(null)
     useEffect(()=>{
         let getData=async ()=>{
             let data=await Axios.get('/albums?id='+id)
             setAlbumData(data)
+            setQueue(data.songs)
         }
         getData()
     },[])

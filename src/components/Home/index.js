@@ -11,6 +11,7 @@ import AppContext from "../../config/Context";
 function Home () {
     const [data,setData]=useState(null)
     const [play,setPlay]=useState(false)
+    const [queue,setQueue]=useState([])
     const [song,setSong]=useState(null)
     const [isPlaying,setisPlaying]=useState(false)
     // const [url,setUrl]=useState('https://aac.saavncdn.com/298/373a7e986b4a4e64f5273f59a6c9f5cf_320.mp4')
@@ -45,7 +46,7 @@ function Home () {
         console.log(songlink)
     }
     return (
-        <AppContext.Provider value={{currentSong: song,url,playSong,isPlaying,setisPlaying}}>
+        <AppContext.Provider value={{currentSong: song,url,playSong,isPlaying,setisPlaying,queue,setQueue}}>
             <div className={'ma_main_cont'}>
                 <div className="ma_background_cont"/>
                 <div className="ma_content_cont">

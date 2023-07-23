@@ -1,7 +1,7 @@
 import axios from "axios";
 const Axios = axios.create({
     baseURL: 'https://saavn.me/',
-    timeout: 1000,
+    timeout: 10000,
 });
 // Add a response interceptor
 Axios.interceptors.response.use(function (response) {

@@ -16,7 +16,96 @@
     }
   }
   .ma_main_search_cont{
+    width: 100%;
+    margin: 15px auto 25px;
     height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .search_input{
+      flex: 1;
+      display: flex;
+      align-items: center;
+      position: relative;
+      input{
+        flex: 1;
+        border: none;
+        font-size: 16px;
+        outline: none;
+        background-color: transparent;
+        padding: 4px 10px;
+        height: 30px;
+        margin: 0 10px;
+      }
+
+      .search_results_cont{
+        position: absolute;
+        min-height: 100px;
+        width: 98%;
+        margin: 10px auto;
+        background: white;
+        z-index: 10;
+        border-radius: 8px;
+        box-shadow: rgba(0, 0, 0, 0.15) 25px 35px 50px;
+        top: 30px;
+        display: flex;
+        flex-direction: column;
+        padding: 10px;
+        max-height: 300px;
+        overflow: scroll;
+        .each_search_result{
+          & > p{
+            font-weight: 600;
+            margin-left: 15px;
+            margin-top: 10px;
+            font-size: 18px;
+          }
+          .each_search_result_item{
+            display: flex;
+            align-items: center;
+            width: 95%;
+            margin: 10px auto;
+            img{
+              width: 60px;
+              aspect-ratio: 1;
+              object-fit: contain;
+            }
+            .name_cont{
+              margin-left: 15px;
+              display: flex;
+              flex-direction: column;
+
+              .result_name{
+                font-size: 16px;
+                font-weight: bold;
+              }
+              .result_album{
+                font-size: 14px;
+                margin-top: 7px;
+                color: #808080;
+              }
+            }
+          }
+        }
+
+      }
+    }
+    .search_action{
+      display: flex;
+      align-items: center;
+      button{
+        outline: none;
+        border: 2px solid #5E77FB;
+        background: transparent;
+        padding: 8px 10px;
+        border-radius: 10px;
+        cursor: pointer;
+      }
+      img{
+        margin-left: 30px;
+        cursor: pointer;
+      }
+    }
   }
   // handle scroll bar
   .no_scroll_bar_cont::-webkit-scrollbar {
@@ -54,7 +143,7 @@
         margin-left: 0;
       }
       .ma_each_album_cont{
-        width: 260px;
+        //width: 260px;search_action
         aspect-ratio: 1;
         margin: 10px 15px;
         display: flex;
@@ -63,7 +152,8 @@
           border-radius: 12px;
           box-shadow: rgba(0, 0, 0, 0.15) 25px 35px 50px;
           border: rgba(71, 98, 240, 0.19);
-          width: 260px;
+          width: 100%;
+          min-width: 200px;
           aspect-ratio: 1;
         }
         P{

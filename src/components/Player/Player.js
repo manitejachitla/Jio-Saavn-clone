@@ -21,7 +21,6 @@ function Player(){
     const pauseSong=()=>{
         setisPlaying(false)
     }
-    const isVideoPlaying = video => !!(video.currentTime > 0 && !video.paused && !video.ended && video.readyState > 2);
     useEffect(()=>{
         if (currentSong && url) {
             if (audioRef.current) {
@@ -88,8 +87,8 @@ function Player(){
                                 console.log(e.target.value,currentSong.duration,dur)
                                 if (audioRef.current) {
                                     audioRef.current.currentTime=dur
-                                    // setcurrDuration(dur)
-                                    // setProgress(dur)
+                                    setcurrDuration(dur)
+                                    setProgress(dur)
                                 }
                             }}/>
                             {/*<div className="progress_bar_cont" onClick={(e)=>console.log(e)}>*/}
