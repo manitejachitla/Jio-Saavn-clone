@@ -61,7 +61,7 @@ function Home () {
         return () => clearTimeout(getData)
     },[searchVal])
     let getData=async ()=> {
-        let data = await Axios.get('modules?language=telugu')
+        let data = await Axios.get('modules?language=english')
         setloading(false)
         setData(data)
     }
