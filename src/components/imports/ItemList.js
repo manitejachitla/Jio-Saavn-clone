@@ -4,10 +4,15 @@ import {getAlbumImg, getArtistName, getModifiedName} from "../MainCont/logic";
 import {useNavigate} from "react-router-dom";
 
 const ItemList = ({type}) => {
-  const {data}=useContext(AppContext)
+  const {data,getData,setloading}=useContext(AppContext)
     const [renderItems,setrenderItems]=useState([])
   const navigate=useNavigate()
     useEffect(()=>{
+        if (!data){
+            console.log("here")
+            getData()
+            return;
+        }
         let updatedItems=[]
         if (data && data[type+'s'] && Array.isArray(data[type+'s'])){
             updatedItems=data[type+'s']
@@ -24,6 +29,7 @@ const ItemList = ({type}) => {
             updatedItems=[...trendingAlbums,...updatedItems]
         }
         setrenderItems(updatedItems)
+        setloading(false)
         console.log({updatedItems})
     },[])
   return (
@@ -34,8 +40,11 @@ const ItemList = ({type}) => {
                     navigate('/'+type+'/'+item.id)
                 }}>
                     <img src={getAlbumImg(item.image,true)} alt=""/>
-                    <p className={'item_name'}>{getModifiedName(type==='album'?item.name:item.title)}</p>
-                    <p className={'item_subtitle'}>{type==='album'?getArtistName(item.artists):getModifiedName(item.subtitle)}</p>
+                    <div className="item_details_cont">
+                        <p className={'item_name'}>{getModifiedName(type==='album'?item.name:item.title)}</p>
+                        <p className={'item_subtitle'}>{type==='album'?getArtistName(item.artists):getModifiedName(item.subtitle)}</p>
+                    </div>
+
                     {/*<p className={'artist_name'}>{getArtistName(item.artists)}</p>*/}
                     {/*{item.title}*/}
                 </div>

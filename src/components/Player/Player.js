@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useRef, useState} from "react";
 import './styles.less'
-import like from '../../images/like2.svg'
+import like from '../../images/volume.png'
 import plalist from '../../images/playlist.svg'
 import repeat from '../../images/Repeat.svg'
 import backImg from '../../images/backward.svg'
@@ -12,8 +12,10 @@ import AppContext from "../../config/Context";
 function Player(){
     let {currentSong,url,queue,isPlaying,setisPlaying,playSong}=useContext(AppContext)
     const audioRef=useRef(null)
+    const progressRef=useRef(null)
     const [progress,setProgress]=useState(0)
     const [currDuration,setcurrDuration]=useState(0)
+    const [volume,setVolume]=useState(100)
     const isSongChanged = useRef(false);
     const playCurrentSong=()=>{
         setisPlaying(true)
@@ -47,6 +49,9 @@ function Player(){
             if (audioRef.current){
                 setcurrDuration(audioRef.current.currentTime)
                 setProgress((parseInt(audioRef.current.currentTime)/parseInt(currentSong.duration))*100)
+                if (audioRef.current.ended){
+                    handleSkipOptions('next')
+                }
             }
         }, 1000);
         // console.log("here player",interval)
@@ -89,37 +94,49 @@ function Player(){
                             <img src={isPlaying?pauseImg:playImg} alt="" className={'play_img'} onClick={isPlaying?pauseCurrentSong:playCurrentSong}/>
                             <img src={forwardImg} alt="" onClick={()=>handleSkipOptions('next')}/>
                             <p className={'curr duration'}>{formatDuration(currDuration)}</p>
-                            <input type="range" onLoadedData={()=>{
-                                if (isPlaying){
-                                    // audioRef.current.play()
-                                }
-                            }} value={progress} id={'song_progress'}
-                                   onPlaying={()=>setisPlaying(true)}
-                                   onProgress={(e)=>{
-                                console.log(e)
-                            }} className={'progress_bar_cont'} onInput={(e)=>{
-                                let dur=currentSong.duration * (e.target.value/100)
-                                console.log(e.target.value,currentSong.duration,dur)
+                            <div className="progress_bar_cont" ref={progressRef} onClick={(e)=> {
+                                let fullwidth=progressRef.current.offsetWidth
+                                let coords=progressRef.current.getBoundingClientRect()
+                                const clamp = (num) => Math.min(Math.max(num, 0), currentSong.duration);
+                                let value=(e.clientX-coords.left)/fullwidth;
+                                // return;
+                                let dur=clamp(currentSong.duration * (value))
+
+                                console.log(value,currentSong.duration,dur,fullwidth)
                                 if (audioRef.current) {
                                     audioRef.current.currentTime=dur
                                     setcurrDuration(dur)
-                                    setProgress(dur)
+                                    setProgress(value*100)
                                 }
-                            }}/>
-                            {/*<div className="progress_bar_cont" onClick={(e)=>console.log(e)}>*/}
-                            {/*    <div className="selected_cont" style={{width:`${progress}%`}}>*/}
-                            {/*    </div>*/}
-                            {/*    <div className="progress_icon_cont">*/}
-                            {/*        <div></div>*/}
-                            {/*    </div>*/}
-                            {/*</div>*/}
+                            }}>
+                                <div className="selected_cont" style={{width:`${progress}%`}}>
+                                </div>
+                                <div className="progress_icon_cont">
+                                    <div></div>
+                                </div>
+                            </div>
                             <p className={'tot duration'}>{formatDuration(currentSong.duration)}</p>
 
                         </div>
                         <div className="player_action_cont">
-                            <img src={like} alt=""/>
+                            <div className={'volume_cont'}>
+                                <div className="volume_hidden_cont">
+                                    <input type="range" id="points" name="points" min="0" max="100" value={volume} onChange={(e)=>{
+                                        let set_vol=e.target.value
+                                        if (audioRef.current){
+                                            audioRef.current.volume=set_vol/100
+                                            setVolume(set_vol)
+                                        }
+                                    }}/>
+                                </div>
+                                <img src={like} alt="volume" className={'volume'}/>
+                            </div>
                             <img src={plalist} alt=""/>
-                            <img src={repeat} alt=""/>
+                            <img src={repeat} title={`Repeat ${audioRef.current && audioRef.current.loop?"ON":"OFF"}`} alt="" onClick={()=>{
+                                if (audioRef.current) {
+                                    audioRef.current.loop =!audioRef.current.loop
+                                }
+                            }}/>
                         </div>
                     </div>
                 ):""

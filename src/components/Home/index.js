@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Route, Routes, useNavigate} from 'react-router-dom'
+import {Route, Routes, useLocation, useNavigate} from 'react-router-dom'
 import './styles.less'
 import SideBar from "../SIdeBar/SideBar";
 import MainCont from "../MainCont";
@@ -15,10 +15,12 @@ import ItemList from "../imports/ItemList";
 
 function Home () {
     const navigate=useNavigate()
+    const location=useLocation()
     const [data,setData]=useState(null)
     const [queue,setQueue]=useState([])
     const [song,setSong]=useState(null)
     const [isPlaying,setisPlaying]=useState(false)
+    const [loading,setloading]=useState(true)
     const [searchData,setSearchData]=useState(null)
     const [searchVal,setSearchVal]=useState('')
     const [showSearch,setshowSearch]=useState(false)
@@ -35,6 +37,9 @@ function Home () {
         switch (type) {
             case 'album':{
                 navigate('/album/'+id)
+                break
+            }case 'playlist':{
+                navigate('/playlist/'+id)
                 break
             }case 'song':{
                 playSong(item)
@@ -55,26 +60,52 @@ function Home () {
         }, 1000)
         return () => clearTimeout(getData)
     },[searchVal])
+    let getData=async ()=> {
+        let data = await Axios.get('modules?language=telugu')
+        setloading(false)
+        setData(data)
+    }
     useEffect(()=>{
-        let getData=async ()=> {
-            let data = await Axios.get('modules?language=telugu')
-            setData(data)
-            }
+        console.log(location)
         getData()
     },[])
+    useEffect(()=>{
+        if (location.pathname!=='/'){
+            setloading(true)
 
+        }
+    },[location])
+    const addSongToStorage=(key,selectedSong)=>{
+        let music=window.localStorage.getItem('music')
+        if (music){
+            music=JSON.parse(music)
+        }
+        if (!music){
+            music={}
+        }
+        if (!music[key]){
+            music[key]=[]
+        }
+        if (!music[key].find(item=>item.id===selectedSong.id)){
+            music[key].push(selectedSong)
+            window.localStorage.setItem("music",JSON.stringify(music))
+        }
+        // console.log(likedSongs)
+    }
     const playSong=async(song)=>{
         let selected_song = []
         selected_song=await Axios.get('/songs?id=' + song.id)
+        if (!selected_song) return;
         selected_song=selected_song[0]
         let selected_song_link=selected_song?.downloadUrl
         let songlink=selected_song_link.slice(-1)[0].link
+        addSongToStorage('recent',song)
         setUrl(songlink)
         setSong(selected_song)
         console.log(songlink)
     }
     return (
-        <AppContext.Provider value={{currentSong: song,data,url,playSong,isPlaying,setisPlaying,queue,setQueue}}>
+        <AppContext.Provider value={{currentSong: song,data,url,playSong,isPlaying,setisPlaying,queue,setQueue,loading,setloading,getData,addSongToStorage}}>
             <div className={'ma_main_cont'}>
                 <div className="ma_background_cont"/>
                 <div className="ma_content_cont">
@@ -131,13 +162,26 @@ function Home () {
                             </div>
                         </div>
                         <div className="ma_main_route_cont no_scroll_bar_cont">
-                            <Routes>
-                                <Route path={'/'} element={<MainCont currentSong={song} albums={data?.albums || []} trending={data?.trending || {}} playSong={playSong}/>}/>
-                                <Route path="/album/:id" element={<Album type={'album'}/>}/>
-                                <Route path="/playlist/:id" element={<Album type={'playlist'}/>}/>
-                                <Route path="/playlists" element={<ItemList type={'playlist'} key={'playlist'}/>}/>
-                                <Route path="/albums" element={<ItemList  type={'album'} key={'album'} />}/>
-                            </Routes>
+                            {
+                                loading?(
+                                    <div className={'ma_main_loading_cont'}>
+
+                                        <div className="loadingio-spinner-rolling-cwu0byipolm"><div className="ldio-yz9vtfty9dn">
+                                            <div></div>
+                                        </div></div>
+                                    </div>
+                                ):(
+                                    <Routes>
+                                        <Route path={'/'} element={<MainCont currentSong={song} albums={data?.albums || []} trending={data?.trending || {}} playSong={playSong}/>}/>
+                                        <Route path="/album/:id" element={<Album type={'album'} key={'album'}/>}/>
+                                        <Route path="/playlist/:id" element={<Album type={'playlist'} key={'playlist'}/>}/>
+                                        <Route path="/playlists" element={<ItemList type={'playlist'} key={'playlist'}/>}/>
+                                        <Route path="/albums" element={<ItemList  type={'album'} key={'album'} />}/>
+                                        <Route path="/recent" element={<Album type={'recent'} key={'recent'} />}/>
+                                        <Route path="/liked" element={<Album type={'like'} key={'like'} />}/>
+                                    </Routes>
+                                )
+                            }
                         </div>
                     </div>
                     {

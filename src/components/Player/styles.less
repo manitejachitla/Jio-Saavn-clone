@@ -107,10 +107,11 @@
         flex: 1;
         display: flex;
         align-items: center;
+        cursor: pointer;
 
         .selected_cont{
           height: 100%;
-          transition: width ease-in 400ms;
+          transition: width ease-in 200ms;
           width: 10%;
           position: relative;
           background: #5E77FB;
@@ -138,6 +139,46 @@
       }
     }
     .player_action_cont{
+      display: flex;
+
+      .volume_cont:hover .volume_hidden_cont{
+        visibility: visible;
+      }
+      .volume_cont{
+        position: relative;
+
+        .volume_hidden_cont{
+          height: 120px;
+          width: 22px;
+          border-radius: 4px;
+          background: white;
+          position: absolute;
+          box-shadow: rgba(0, 0, 0, 0.25) 25px 35px 50px;
+          top:-120px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          left:28px;
+          visibility: hidden;
+          input[type="range"] {
+            //-webkit-appearance: none;
+            //appearance: none;
+            //background: red;
+            //cursor: pointer;
+          }
+
+          input{
+            transform: rotate(-90deg);
+            width:110px;
+            cursor: pointer;
+          }
+        }
+        img{
+          width: 30px;
+          aspect-ratio: 1;
+          object-fit: contain;
+        }
+      }
       img{
         margin-left: 30px;
       }

@@ -18,7 +18,7 @@ function MainCont(props)  {
     }
 
     const handleScroll=(key,isLeft)=>{
-        let scrollBy,x=window.innerWidth* 0.7,element=key==='top'?topMusic:recommended;
+        let scrollBy,x=window.innerWidth*(key==='top'? 0.7:0.4),element=key==='top'?topMusic:recommended;
         if (isLeft){
             scrollBy=scrollX[key]-x
         } else {

@@ -54,6 +54,10 @@
   .song_action_cont{
     display: flex;
     align-items: center;
+
+    img{
+      margin:0 15px ;
+    }
   }
 }
 
@@ -122,15 +126,17 @@
   overflow: auto;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   flex-wrap: wrap;
 
   .ma_il_each_item{
     //width: 260px;search_action
     aspect-ratio: 1;
-    margin: 10px 15px;
+    padding: 10px 15px;
     display: flex;
+    margin: 8px 0px;
     flex-direction: column;
-    width: 18%;
+    width: 20%;
     min-width: 180px;
     img{
       border-radius: 12px;
@@ -138,6 +144,10 @@
       border: rgba(71, 98, 240, 0.19);
       width: 100%;
       aspect-ratio: 1;
+    }
+
+    .item_details_cont{
+      height: 50px;
     }
     P{
       margin-top: 10px;
