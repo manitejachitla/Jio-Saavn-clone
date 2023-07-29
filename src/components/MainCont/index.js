@@ -73,7 +73,7 @@ function MainCont(props)  {
                         <div className="heading_cont">
                             <p>Popular</p>
                         </div>
-                        <div className="songs_cont">
+                        <div className="songs_cont no_scroll_bar_cont">
                             {
                                 songs && songs.map(song=>(
                                     <Song song={song} currentSong={currentSong} playSong={playSong} isHome={trending}/>

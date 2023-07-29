@@ -1,6 +1,6 @@
 import playImg from "../../images/play.svg";
 import pauseImg from "../../images/pause.svg";
-import {formatDuration, getAlbumImg, getModifiedName} from "../MainCont/logic";
+import {formatDuration, getAlbumImg, getArtistName, getModifiedName} from "../MainCont/logic";
 import downloadImg from "../../images/download-2.png";
 import like from "../../images/like2.svg";
 import React, {useContext} from "react";
@@ -27,7 +27,6 @@ const Song = ({song,isHome,showSongIcon}) => {
         document.body.removeChild(link)
     }
 
-    console.log("this is called")
 
     return (
       <div className={`ma_each_song ${currentSong && currentSong.id===song.id?"ma_each_selected_song":""}`}  key={song.id}>
@@ -47,7 +46,7 @@ const Song = ({song,isHome,showSongIcon}) => {
               {
                   !isHome?(
                           <div className="song_middle_cont">
-                              <p className={'artist'}>{song.primaryArtists}</p>
+                              <p className={'artist'}>{getArtistName(song.primaryArtists)}</p>
                           </div>
                   ):""
               }

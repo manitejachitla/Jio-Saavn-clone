@@ -1,8 +1,12 @@
 import Axios from "../../config/Axios";
 
 export function getArtistName(artists){
-    artists=artists.slice(0,3)
-    return artists.map(item=>item.name).toString()
+    if (Array.isArray(artists)){
+        artists=artists.slice(0,1)
+        return artists.map(item=>item.name).toString()
+    } else {
+        return artists
+    }
 }
 export function getModifiedName(name){
     return name.split('(')[0] || ''

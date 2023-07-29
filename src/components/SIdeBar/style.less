@@ -32,7 +32,7 @@
 }
 .ma_sidebar_browse_cont{
     width: 100%;
-    padding: 5px 10px;
+    padding: 5px 0px;
 
     a{
         text-decoration: none;
@@ -42,17 +42,32 @@
 .ma_sidebar_browse_cont .heading{
     margin: 20px auto 10px;
     width: 90%;
+    padding: 0 10px;
     font-size: 18px;
     font-weight: 600;
 }
-.ma_sidebar_browse_cont .browse_item{
-    width: 90%;
-    display: flex;
-    align-items: center;
-    margin: 10px auto;
-    font-size: 16px;
-    font-weight: 600;
+.ma_sidebar_browse_cont {
+    .browse_out{
+        width: 100%;
+        .browse_item{
+            width: 90%;
+            display: flex;
+            align-items: center;
+            margin: 2px auto;
+            font-size: 16px;
+            font-weight: 600;
+            padding: 8px 10px;
 
+
+        }
+
+
+    }
+    .browse_out:hover,.browse_out_active{
+        background: white;
+        border-radius: 8px;
+        box-shadow: rgba(0, 0, 0, 0.15) 5px 5px 50px;
+    }
 }
 .ma_sidebar_browse_cont .browse_item img{
     margin-right: 10px;

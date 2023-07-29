@@ -24,7 +24,7 @@
   }
   .ma_main_search_cont{
     width: 95%;
-    margin: 15px auto 25px;
+    margin: 0px auto 25px auto;
     height: 45px;
     display: flex;
     align-items: center;
@@ -117,7 +117,7 @@
 
   .ma_main_top_music_cont{
     width: 100%;
-
+    height: calc(60% - 35px);
     .ma_album_cont{
       width: 100%;
       display: flex;
@@ -155,6 +155,7 @@
   }
   .ma_main_music_cont{
     width: 100%;
+    height: calc(40% - 35px);
     margin-top: 20px;
     justify-content: space-between;
     display: flex;
@@ -162,7 +163,11 @@
 
     .ma_main_popular_cont{
       width: 38%;
-
+      height: 100%;
+      .songs_cont{
+        height: 90%;
+        overflow-y: auto;
+      }
     }
 
     .ma_main_recommend_cont{

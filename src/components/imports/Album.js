@@ -8,6 +8,7 @@ const Album = ({type}) => {
     let {currentSong,playSong,queue,setQueue,setloading}=useContext(AppContext)
     const {id}=useParams()
     const [albumdata,setAlbumData]=useState(null)
+    const [albumSongs,setAlbumSongs]=useState([])
     useEffect(()=>{
         let getData=async ()=>{
             let data=await Axios.get(`/${type}s?id=${id}`)
@@ -23,14 +24,15 @@ const Album = ({type}) => {
             let music_data=window.localStorage.getItem('music'),songs_data=[]
             if (music_data){
                 music_data=JSON.parse(music_data)
-                console.log({music_data})
                 if (music_data && music_data[type] && Array.isArray(music_data[type])){
                     songs_data=music_data[type]
                 }
-                console.log(songs_data)
-                let albData={id:10,songs:songs_data}
-                setAlbumData(albData)
-                setQueue(songs_data)
+                if(songs_data.length){
+                    let albData={id:10,songs:songs_data}
+                    setAlbumData(albData)
+                    setAlbumSongs(albumSongs)
+                    setQueue(songs_data)
+                }
                 setloading(false)
             }
         }
