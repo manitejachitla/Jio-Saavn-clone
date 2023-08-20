@@ -25,7 +25,7 @@ const Album = ({type}) => {
             if (music_data){
                 music_data=JSON.parse(music_data)
                 if (music_data && music_data[type] && Array.isArray(music_data[type])){
-                    songs_data=music_data[type]
+                    songs_data=music_data[type].reverse()
                 }
                 if(songs_data.length){
                     let albData={id:10,songs:songs_data}

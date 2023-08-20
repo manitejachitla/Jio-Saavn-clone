@@ -9,7 +9,10 @@ export function getArtistName(artists){
     }
 }
 export function getModifiedName(name){
-    return name.split('(')[0] || ''
+    if (typeof name==="string"){
+        return name.split('(')[0] || ''
+    }
+    return name
 }
 export function getAlbumImg(album,highQuality){
     let ind=-2;

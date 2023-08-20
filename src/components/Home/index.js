@@ -71,7 +71,7 @@ function Home () {
     },[])
     useEffect(()=>{
         if (location.pathname!=='/'){
-            setloading(true)
+            // setloading(true)
 
         }
     },[location])
