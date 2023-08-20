@@ -41,7 +41,7 @@ The Music Player Application is a user-friendly and feature-rich platform that a
 - React.js: Frontend user interface
 - Context API: State management
 - HTML and LESS: Styling and layout
-- Node.js: Backend server for managing user data and authentication
+- [Saavn.me](https://docs.saavn.me/) : Saavn.me is an unofficial API for JioSaavn for downloading high-quality songs for free.
 - Local Storage: Database for storing user information, Rcently Played, and favorite tracks
 
 
